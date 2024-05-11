@@ -376,21 +376,40 @@ services:
 
   # The nginx reverse proxy.
   # used for reverse proxying the API service and Web service.
-  nginx:
-    image: nginx:latest
+  nginx-proxy-manager:
+    image: 'docker.io/jc21/nginx-proxy-manager:latest'
+    # restart: unless-stopped
     restart: always
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/proxy.conf:/etc/nginx/proxy.conf
       - ./nginx/conf.d:/etc/nginx/conf.d
-      #- ./nginx/ssl:/etc/ssl
+    ports:
+      - '80:80'
+      - '81:81' # For Admin
+      - '443:443'
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
     depends_on:
       - api
       - web
       - oauth2-proxy
-    ports:
-      - "80:80"
-      # - "443:443"
+  # nginx:
+  #   image: nginx:latest
+  #   restart: always
+  #   volumes:
+  #     - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+  #     - ./nginx/proxy.conf:/etc/nginx/proxy.conf
+  #     - ./nginx/conf.d:/etc/nginx/conf.d
+  #     #- ./nginx/ssl:/etc/ssl
+  #   depends_on:
+  #     - api
+  #     - web
+  #     - oauth2-proxy
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
   oauth2-proxy:
     container_name: oauth2-proxy
     image: quay.io/oauth2-proxy/oauth2-proxy:latest
