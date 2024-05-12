@@ -3,22 +3,49 @@ server {
     server_name _;
 
     location /console/api {
+      allow 127.0.0.1;
+      allow 172.20.0.0/16; # Allow only communication within private network
+      deny all;
       proxy_pass http://api:5001;
       include proxy.conf;
     }
 
     location /api {
+      allow 127.0.0.1;
+      allow 172.20.0.0/16;
+      deny all;
       proxy_pass http://api:5001;
       include proxy.conf;
     }
 
     location /v1 {
+      allow 127.0.0.1;
+      allow 172.20.0.0/16;
+      deny all;
       proxy_pass http://api:5001;
       include proxy.conf;
     }
 
     location /files {
+      allow 127.0.0.1;
+      allow 172.20.0.0/16;
+      deny all;
       proxy_pass http://api:5001;
+      include proxy.conf;
+    }
+
+    location /chatbot {
+      proxy_pass http://web:3000/chatbot;
+      include proxy.conf;
+    }
+
+    location /logo {
+      proxy_pass http://web:3000/logo;
+      include proxy.conf;
+    }
+
+    location /embed.min.js {
+      proxy_pass http://web:3000/embed.min.js;
       include proxy.conf;
     }
 
