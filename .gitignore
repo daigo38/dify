@@ -110,7 +110,8 @@ ENV/
 env.bak/
 venv.bak/
 .conda/
-oauth2_proxy.env
+.nginx.env
+.oauth2_proxy.env
 
 # Spyder project settings
 .spyderproject
